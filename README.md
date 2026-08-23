@@ -4,7 +4,7 @@ WPF custom control built **entirely in C#** with WPFX.
 
 ## Custom control: `ClockControl`
 
-Minimalist custom control with:
+Lookless custom control with:
 
 - A single DependencyProperty / CLR property: `Timestamp` (`DateTime`)
 - A RoutedEvent / CLR event: `TimestampChanged`
