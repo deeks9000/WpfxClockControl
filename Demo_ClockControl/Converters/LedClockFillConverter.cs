@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Demo_ClockControl.Models;
+using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -6,7 +7,11 @@ namespace Demo_ClockControl.Converters;
 
 public class LedClockFillConverter : IValueConverter
 {
-    public static readonly SolidColorBrush SegmentOffBrush = new SolidColorBrush(Color.FromRgb(40, 40, 40));
+    public static readonly SolidColorBrush SegmentOffBrush = new SolidColorBrush(Color.FromRgb(32, 32, 32));
+
+    public static readonly SolidColorBrush SecondsSegmentOnBrush = Brushes.Red;
+
+    public static readonly SolidColorBrush MinutesSegmentOnBrush = Brushes.LawnGreen;
 
     // 5 x 9 seven-segment layout:
     //
@@ -36,30 +41,31 @@ public class LedClockFillConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is not DateTime dateTime)
-            return SegmentOffBrush;  
+            return SegmentOffBrush;
 
-        if (parameter is not LedClockSegment ledSegment)
-            return SegmentOffBrush; 
+        if (parameter is not SegmentModel segmentModel)
+            return SegmentOffBrush;
 
-        int digit = ledSegment.Digit switch {
-            ClockDigit.UnitSeconds => dateTime.Second % 10,
-            ClockDigit.TenSeconds => dateTime.Second / 10,
-            ClockDigit.UnitMinutes => dateTime.Minute % 10,
-            ClockDigit.TenMinutes => dateTime.Minute / 10,
-            ClockDigit.UnitHours => dateTime.Hour % 10,
-            ClockDigit.TenHours => dateTime.Hour / 10,
+        int digit = segmentModel.Unit switch {
+            ClockUnit.OneSeconds => dateTime.Second % 10,
+            ClockUnit.TenSeconds => dateTime.Second / 10,
+            ClockUnit.OneMinutes => dateTime.Minute % 10,
+            ClockUnit.TenMinutes => dateTime.Minute / 10,
+            ClockUnit.OneHours => dateTime.Hour % 10,
+            ClockUnit.TenHours => dateTime.Hour / 10,
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        bool isSegmentOn = Decoder[digit].Contains(ledSegment.Segment.ToString());
+        bool isSegmentOn = Decoder[digit].Contains(segmentModel.Segment.ToString());
 
-        Brush segmentOnBrush = (ledSegment.Digit == ClockDigit.UnitSeconds || ledSegment.Digit == ClockDigit.TenSeconds)
-            ? Brushes.Red
-            : Brushes.LawnGreen;
+        if (!isSegmentOn)
+            return SegmentOffBrush;
 
-        return isSegmentOn
-            ? segmentOnBrush
-            : SegmentOffBrush;
+        bool isSeconds = (segmentModel.Unit == ClockUnit.OneSeconds || segmentModel.Unit == ClockUnit.TenSeconds);
+
+        return isSeconds
+            ? SecondsSegmentOnBrush
+            : MinutesSegmentOnBrush;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

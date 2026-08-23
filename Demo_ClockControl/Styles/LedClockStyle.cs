@@ -4,6 +4,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Demo_ClockControl.Converters;
+using Demo_ClockControl.Models;
 using WpfxCustomControls;
 
 namespace Demo_ClockControl.Styles;
@@ -61,7 +62,7 @@ public static class LedClockStyle
             setters: [
                 SetterX(Control.TemplateProperty, template),
             ]
-        );               
+        );
 
         return style;
     }
@@ -71,53 +72,53 @@ public static class LedClockStyle
         var children = new List<FrameworkElementFactory>();
 
         // ---- HOURS ----
-        children.AddRange(BuildDigit(ClockDigit.TenHours, x: 0));
-        children.AddRange(BuildDigit(ClockDigit.UnitHours, x: 60));
+        children.AddRange(BuildDigit(ClockUnit.TenHours, x: 0));
+        children.AddRange(BuildDigit(ClockUnit.OneHours, x: 60));
 
         // ---- HOURS COLON ----
         children.Add(BuildColon(x: 120));
 
         // ---- MINUTES ----
-        children.AddRange(BuildDigit(ClockDigit.TenMinutes, x: 140));
-        children.AddRange(BuildDigit(ClockDigit.UnitMinutes, x: 200));
+        children.AddRange(BuildDigit(ClockUnit.TenMinutes, x: 140));
+        children.AddRange(BuildDigit(ClockUnit.OneMinutes, x: 200));
 
         // --- SECONDS COLON ----
         children.Add(BuildColon(x: 260, isSeconds: true));
 
         // ---- SECONDS ----
-        children.AddRange(BuildDigit(ClockDigit.TenSeconds, x: 280));
-        children.AddRange(BuildDigit(ClockDigit.UnitSeconds, x: 340));
+        children.AddRange(BuildDigit(ClockUnit.TenSeconds, x: 280));
+        children.AddRange(BuildDigit(ClockUnit.OneSeconds, x: 340));
 
         return children.ToArray();
     }
 
-    private static FrameworkElementFactory[] BuildDigit(ClockDigit digit, int x)
+    private static FrameworkElementFactory[] BuildDigit(ClockUnit unit, int x)
     {
         return [
             // [A] Top
-            BuildSegment(digit, LedSegment.A, x + PixelSize, 0, width: 3 * PixelSize, height: PixelSize),
+            BuildSegment(unit, LedSegment.A, x + PixelSize, 0, width: 3 * PixelSize, height: PixelSize),
 
             // [B] Upper Right
-            BuildSegment(digit, LedSegment.B, x + 4 * PixelSize, PixelSize, width: PixelSize, height: 3 * PixelSize),
+            BuildSegment(unit, LedSegment.B, x + 4 * PixelSize, PixelSize, width: PixelSize, height: 3 * PixelSize),
 
             // [C] Lower Right
-            BuildSegment(digit, LedSegment.C, x + 4 * PixelSize, 5 * PixelSize, width: PixelSize, height: 3 * PixelSize),
+            BuildSegment(unit, LedSegment.C, x + 4 * PixelSize, 5 * PixelSize, width: PixelSize, height: 3 * PixelSize),
 
             // [D] Bottom
-            BuildSegment(digit, LedSegment.D, x + PixelSize, 8 * PixelSize, width: 3 * PixelSize, height: PixelSize),
+            BuildSegment(unit, LedSegment.D, x + PixelSize, 8 * PixelSize, width: 3 * PixelSize, height: PixelSize),
 
             // [E] Lower Left
-            BuildSegment(digit, LedSegment.E, x, 5 * PixelSize, width: PixelSize, height: 3 * PixelSize),
+            BuildSegment(unit, LedSegment.E, x, 5 * PixelSize, width: PixelSize, height: 3 * PixelSize),
 
             // [F] Upper Left
-            BuildSegment(digit, LedSegment.F, x, PixelSize, width: PixelSize, height: 3 * PixelSize),
+            BuildSegment(unit, LedSegment.F, x, PixelSize, width: PixelSize, height: 3 * PixelSize),
 
             // [G] Middle
-            BuildSegment(digit, LedSegment.G, x + PixelSize, 4 * PixelSize, width: 3 * PixelSize, height: PixelSize),
+            BuildSegment(unit, LedSegment.G, x + PixelSize, 4 * PixelSize, width: 3 * PixelSize, height: PixelSize),
         ];
     }
 
-    private static FrameworkElementFactory BuildSegment(ClockDigit digit, LedSegment segment, int x, int y, int width, int height)
+    private static FrameworkElementFactory BuildSegment(ClockUnit unit, LedSegment segment, int x, int y, int width, int height)
     {
         return FrameworkElementFactoryX<Rectangle>(
             setters: [
@@ -130,7 +131,7 @@ public static class LedClockStyle
                     b.Path = new PropertyPath(nameof(ClockControl.Timestamp));
                     b.RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent);
                     b.Converter = new LedClockFillConverter();
-                    b.ConverterParameter = new LedClockSegment(digit, segment);
+                    b.ConverterParameter = new SegmentModel(unit, segment);
                 }))
             ]
         );

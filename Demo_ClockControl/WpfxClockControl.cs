@@ -19,5 +19,5 @@ public static class WpfxClockControl
         var element = new ClockControl();
         configure?.Invoke(element);
         return element;
-    }
+    }   
 }

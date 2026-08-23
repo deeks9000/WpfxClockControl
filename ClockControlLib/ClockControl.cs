@@ -9,22 +9,23 @@ public class ClockControl : Control
 {
     private readonly DispatcherTimer _timer = new DispatcherTimer();
 
+    public static Style DefaultStyle { get; }
+
     //------------------------------------------------------------------------------
     // Static Constructor
 
     static ClockControl()
-    {     
-        var style = BuildDefaultStyle();
+    {
+        DefaultStyle = BuildDefaultStyle();
 
-        StyleProperty.OverrideMetadata(typeof(ClockControl), new FrameworkPropertyMetadata(style));
+        StyleProperty.OverrideMetadata(typeof(ClockControl), new FrameworkPropertyMetadata(DefaultStyle));
     }
 
-    private static Style BuildDefaultStyle()
+    public static Style BuildDefaultStyle()
     {
         var visualTree = FrameworkElementFactoryX<TextBlock>(
             name: "PART_Root",
             setters: [
-                SetterX(TextBlock.FontSizeProperty, 24d),
                 SetterX(TextBlock.TextProperty, BindingX(b => {
                     b.Path = new PropertyPath(nameof(ClockControl.Timestamp));
                     b.RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent);
@@ -36,9 +37,10 @@ public class ClockControl : Control
         var template = ControlTemplateX<ClockControl>(visualTree);
 
         var style = StyleX<ClockControl>(
-           setters: [
-               SetterX(Control.TemplateProperty, template),
-           ]
+            setters: [
+                SetterX(TextBlock.FontSizeProperty, 24d),
+                SetterX(Control.TemplateProperty, template),
+            ]
         );
 
         return style;
@@ -64,9 +66,8 @@ public class ClockControl : Control
     
     private void ClockControl_Loaded(object sender, RoutedEventArgs e)
     {
-        Timestamp = DateTime.Now;
+        _timer.Interval = TimeSpan.Zero;
 
-        _timer.Interval = TimeSpan.FromMilliseconds(1000 - Timestamp.Millisecond);
         _timer.Start();
     }
 
@@ -78,7 +79,7 @@ public class ClockControl : Control
     //------------------------------------------------------------------------------
     // Properties
 
-    // DependencyProperty
+    // Dependency Property
     public static readonly DependencyProperty TimestampProperty = DependencyProperty.Register(
         nameof(Timestamp),
         typeof(DateTime),
@@ -89,15 +90,8 @@ public class ClockControl : Control
     // CLR Property
     public DateTime Timestamp
     {
-        get
-        {
-            return (DateTime)GetValue(TimestampProperty);
-        }
-
-        set
-        {
-            SetValue(TimestampProperty, value);
-        }
+        get => (DateTime)GetValue(TimestampProperty);
+        set => SetValue(TimestampProperty, value);
     }
 
     //------------------------------------------------------------------------------

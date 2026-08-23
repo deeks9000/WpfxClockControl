@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using WpfxCustomControls;
 
 namespace Demo_ClockControl;
 
@@ -34,7 +35,23 @@ public class MainWindow : Window
                         configure: x => {
                             x.HorizontalAlignment = HorizontalAlignment.Center;
                             x.VerticalAlignment = VerticalAlignment.Center;
-                            x.Foreground = Brushes.Purple;
+
+                            //x.Foreground = Brushes.Magenta;
+                            //x.FontWeight = FontWeights.Bold;
+                            //x.FontFamily = new FontFamily("Courier New");
+                            //x.FontSize = 42;
+
+                            var style = StyleX<ClockControl>(
+                                basedOn: ClockControl.DefaultStyle,
+                                setters: [
+                                    SetterX(Control.ForegroundProperty, Brushes.Magenta),
+                                    SetterX(Control.FontWeightProperty, FontWeights.Bold),
+                                    SetterX(TextBlock.FontFamilyProperty, new FontFamily("Courier New")),
+                                    SetterX(TextBlock.FontSizeProperty, 42d),
+                                ]
+                            );
+
+                            x.Style = style;
                         }
                     )
                 ),
