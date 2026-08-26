@@ -1,10 +1,10 @@
-# WPFX ClockControl
+# Lookless clock custom control
 
 WPF custom control built **entirely in C#** with WPFX.
 
-## Custom control: `ClockControl`
+## `ClockControl`
 
-Lookless custom control with:
+Lookless clock custom control.
 
 - A single DependencyProperty / CLR property: `Timestamp` (`DateTime`)
 - A RoutedEvent / CLR event: `TimestampChanged`
@@ -34,7 +34,7 @@ The demo app provides two example templates:
 The demo app uses the NuGet package `UserExtensions.Wpfx` to create and display a WPF `Window` containing three `ClockControl` instances, each using a different `ControlTemplate`:
 
 - **Row 0:** Built-in default template rendering `Timestamp` as `"dd/MM/yyyy HH:mm:ss"`
-- **Row 1:** A 7-segment LED template and style built programmatically (`LedClockStyle` / `LedClockConverter`)
+- **Row 1:** A 7-segment LED template and style built programmatically (`LedClockStyle` / `LedClockFillConverter`)
 - **Row 2:** A template that formats the Timetamp to display the weekday (`WeekdayClockStyle` / `WeekdayConverter`)
 
 ![WPF demo app showing a custom ClockControl built using WPFX](https://raw.githubusercontent.com/deeks9000/WpfxClockControl/main/Images/Demo_ClockControl.png)
