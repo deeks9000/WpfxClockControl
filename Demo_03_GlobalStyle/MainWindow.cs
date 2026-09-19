@@ -33,7 +33,7 @@ public class MainWindow : Window
                             x.VerticalAlignment = VerticalAlignment.Center;
                         }
                     )
-                )               
+                )
             ]
         );
     }

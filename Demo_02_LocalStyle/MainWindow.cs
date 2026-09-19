@@ -31,11 +31,11 @@ public class MainWindow : Window
                     child: ClockControlX(
                         configure: x => {
                             x.HorizontalAlignment = HorizontalAlignment.Center;
-                            x.VerticalAlignment = VerticalAlignment.Center;                                                       
+                            x.VerticalAlignment = VerticalAlignment.Center;
                             x.Style = BuildLocalStyle();
                         }
                     )
-                )               
+                )
             ]
         );
     }

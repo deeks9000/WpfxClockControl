@@ -25,7 +25,8 @@ public static class WeekdayClockStyle
                         SetterX(TextBlock.TextProperty, BindingX(b => {
                             b.Path = PropertyPathX(nameof(ClockControl.Timestamp));
                             b.RelativeSource = RelativeSourceX(RelativeSourceMode.TemplatedParent);
-                            b.Converter = new WeekdayDayMonthConverter();       //new WeekdayConverter();
+                            b.Converter = new WeekdayDayMonthConverter();
+                            //b.Converter = new WeekdayConverter();
                         }))
                     ]
                 )

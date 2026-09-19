@@ -34,10 +34,10 @@ public class MainWindow : Window
                             x.Foreground = Brushes.CornflowerBlue;
                             x.FontWeight = FontWeights.Bold;
                             x.FontFamily = new FontFamily("Courier New");
-                            x.FontSize = 48;                            
+                            x.FontSize = 48;
                         }
                     )
-                )         
+                )
             ]
         );
     }
