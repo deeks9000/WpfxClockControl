@@ -2,10 +2,10 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using Demo_ClockControl.Converters;
+using Demo_04_ClockControls.Converters;
 using WpfxCustomControls;
 
-namespace Demo_ClockControl.Styles;
+namespace Demo_04_ClockControls.Styles;
 
 public static class WeekdayClockStyle
 {
@@ -23,16 +23,17 @@ public static class WeekdayClockStyle
                     name: "PART_Weekday",
                     setters: [
                         SetterX(TextBlock.TextProperty, BindingX(b => {
-                            b.Path = new PropertyPath(nameof(ClockControl.Timestamp));
-                            b.RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent);
-                            b.Converter = new WeekdayConverter();
+                            b.Path = PropertyPathX(nameof(ClockControl.Timestamp));
+                            b.RelativeSource = RelativeSourceX(RelativeSourceMode.TemplatedParent);
+                            b.Converter = new WeekdayDayMonthConverter();
+                            //b.Converter = new WeekdayConverter();
                         }))
                     ]
                 )
             ]
         );
 
-        var template = ControlTemplateX<ClockControl>(visualTree);
+        var controlTemplate = ControlTemplateX<ClockControl>(visualTree);
 
         var style = StyleX<ClockControl>(
             setters: [
@@ -41,8 +42,8 @@ public static class WeekdayClockStyle
                 SetterX(TextBlock.FontFamilyProperty, new FontFamily("Courier New")),
                 SetterX(TextBlock.FontStyleProperty, FontStyles.Italic),
                 SetterX(TextBlock.FontWeightProperty, FontWeights.SemiBold),
-                SetterX(TextBlock.FontSizeProperty, 42d),
-                SetterX(Control.TemplateProperty, template),
+                SetterX(TextBlock.FontSizeProperty, 48d),
+                SetterX(Control.TemplateProperty, controlTemplate),
             ]
         );
 

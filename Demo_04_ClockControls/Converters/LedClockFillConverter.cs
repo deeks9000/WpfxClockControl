@@ -1,9 +1,9 @@
-﻿using Demo_ClockControl.Models;
+﻿using Demo_04_ClockControls.Models;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace Demo_ClockControl.Converters;
+namespace Demo_04_ClockControls.Converters;
 
 public class LedClockFillConverter : IValueConverter
 {

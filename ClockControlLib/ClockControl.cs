@@ -18,32 +18,69 @@ public class ClockControl : Control
     {
         DefaultStyle = BuildDefaultStyle();
 
-        StyleProperty.OverrideMetadata(typeof(ClockControl), new FrameworkPropertyMetadata(DefaultStyle));
+        StyleProperty.OverrideMetadata(typeof(ClockControl), new FrameworkPropertyMetadata(DefaultStyle, OnStyleChanged));
     }
 
-    public static Style BuildDefaultStyle()
+    private static Style BuildDefaultStyle()
     {
         var visualTree = FrameworkElementFactoryX<TextBlock>(
             name: "PART_Root",
             setters: [
                 SetterX(TextBlock.TextProperty, BindingX(b => {
-                    b.Path = new PropertyPath(nameof(ClockControl.Timestamp));
-                    b.RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent);
+                    b.Path = PropertyPathX(nameof(ClockControl.Timestamp));
+                    b.RelativeSource = RelativeSourceX(RelativeSourceMode.TemplatedParent);
                     b.StringFormat = "dd/MM/yyyy HH:mm:ss";
                 }))
             ]
         );
 
-        var template = ControlTemplateX<ClockControl>(visualTree);
+        var controlTemplate = ControlTemplateX<ClockControl>(visualTree);
 
         var style = StyleX<ClockControl>(
             setters: [
                 SetterX(TextBlock.FontSizeProperty, 24d),
-                SetterX(Control.TemplateProperty, template),
+                SetterX(Control.TemplateProperty, controlTemplate),
             ]
         );
 
         return style;
+    }
+
+    private static void OnStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.NewValue is not Style style) return;
+
+        //------------------------------------------------------------------------
+        // EXPLICIT BasedOn. This is either:
+        // [1] A user supplied a Style with an explicit BasedOn
+        // [2] The DefaultStyle, transparently inserted into a user supplied Style without BasedOn (the 2nd pass of this method)
+
+        if (style.BasedOn is not null) return;
+
+        //------------------------------------------------------------------------
+        // User supplied Style WITHOUT BasedOn:
+        // Preserve the user's entire style, then transparently establish our DefaultStyle as its base
+
+        Style correctedStyle = CloneStyle(style);
+        correctedStyle.BasedOn = DefaultStyle;
+
+        d.SetValue(StyleProperty, correctedStyle);
+    }
+
+    private static Style CloneStyle(Style source)
+    {
+        var clone = new Style(source.TargetType, source.BasedOn);
+
+        foreach (var setter in source.Setters)
+            clone.Setters.Add(setter);
+
+        foreach (var trigger in source.Triggers)
+            clone.Triggers.Add(trigger);
+
+        foreach (var key in source.Resources.Keys)
+            clone.Resources[key] = source.Resources[key];
+
+        return clone;
     }
 
     //------------------------------------------------------------------------------

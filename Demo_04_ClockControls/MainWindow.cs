@@ -1,16 +1,15 @@
-﻿using Demo_ClockControl.Styles;
+﻿using Demo_04_ClockControls.Styles;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using WpfxCustomControls;
 
-namespace Demo_ClockControl;
+namespace Demo_04_ClockControls;
 
 public class MainWindow : Window
 {
     public MainWindow()
     {
-        Title = "Demo ClockControl";
+        Title = "Demo 04 ClockControls";
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
         Width = 800;
         Height = 500;
@@ -35,23 +34,10 @@ public class MainWindow : Window
                         configure: x => {
                             x.HorizontalAlignment = HorizontalAlignment.Center;
                             x.VerticalAlignment = VerticalAlignment.Center;
-
-                            //x.Foreground = Brushes.Magenta;
-                            //x.FontWeight = FontWeights.Bold;
-                            //x.FontFamily = new FontFamily("Courier New");
-                            //x.FontSize = 42;
-
-                            var style = StyleX<ClockControl>(
-                                basedOn: ClockControl.DefaultStyle,
-                                setters: [
-                                    SetterX(Control.ForegroundProperty, Brushes.Magenta),
-                                    SetterX(Control.FontWeightProperty, FontWeights.Bold),
-                                    SetterX(TextBlock.FontFamilyProperty, new FontFamily("Courier New")),
-                                    SetterX(TextBlock.FontSizeProperty, 42d),
-                                ]
-                            );
-
-                            x.Style = style;
+                            x.Foreground = Brushes.Magenta;
+                            x.FontWeight = FontWeights.Bold;
+                            x.FontFamily = new FontFamily("Courier New");
+                            x.FontSize = 48;
                         }
                     )
                 ),
@@ -64,7 +50,7 @@ public class MainWindow : Window
                         configure: x => {
                             x.HorizontalAlignment = HorizontalAlignment.Center;
                             x.VerticalAlignment = VerticalAlignment.Center;
-                            x.Style = Application.Current.TryFindResource(LedClockStyle.Name) as Style;
+                            x.Style = TryFindResource(LedClockStyle.Name) as Style;
                         }
                     )
                 ),
@@ -77,7 +63,7 @@ public class MainWindow : Window
                         configure: x => {
                             x.HorizontalAlignment = HorizontalAlignment.Center;
                             x.VerticalAlignment = VerticalAlignment.Center;
-                            x.Style = Application.Current.TryFindResource(WeekdayClockStyle.Name) as Style;
+                            x.Style = TryFindResource(WeekdayClockStyle.Name) as Style;
                         }
                     )
                 ),
