@@ -1,15 +1,17 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
 
-namespace Demo_ClockControl.Converters;
+namespace Demo_04_ClockControls.Converters;
 
 [ValueConversion(typeof(DateTime), typeof(string))]
-public class WeekdayConverter : IValueConverter
+public class WeekdayDayMonthConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        DateTime date = (DateTime)value;
-        return date.DayOfWeek.ToString();
+        if (value is DateTime date)
+            return date.ToString("dddd d MMMM", culture);
+
+        return string.Empty;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

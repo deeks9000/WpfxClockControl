@@ -1,7 +1,7 @@
-﻿using Demo_ClockControl.Styles;
+﻿using Demo_04_ClockControls.Styles;
 using System.Windows;
 
-namespace Demo_ClockControl;
+namespace Demo_04_ClockControls;
 
 public static class Program
 {

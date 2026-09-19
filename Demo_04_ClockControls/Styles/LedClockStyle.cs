@@ -3,11 +3,11 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Demo_ClockControl.Converters;
-using Demo_ClockControl.Models;
+using Demo_04_ClockControls.Converters;
+using Demo_04_ClockControls.Models;
 using WpfxCustomControls;
 
-namespace Demo_ClockControl.Styles;
+namespace Demo_04_ClockControls.Styles;
 
 public static class LedClockStyle
 {
@@ -49,18 +49,18 @@ public static class LedClockStyle
         var visualTree = FrameworkElementFactoryX<Canvas>(
             name: "PART_Root",
             setters: [
-                SetterX(StackPanel.BackgroundProperty, Brushes.Black),
                 SetterX(Canvas.WidthProperty, (double)(DisplayWidthPixels * PixelSize)),
                 SetterX(Canvas.HeightProperty, (double)(DisplayHeightPixels * PixelSize)),
             ],
             children: BuildClockDisplay()
         );
 
-        var template = ControlTemplateX<ClockControl>(visualTree);
+        var controlTemplate = ControlTemplateX<ClockControl>(visualTree);
 
         var style = StyleX<ClockControl>(
             setters: [
-                SetterX(Control.TemplateProperty, template),
+                SetterX(StackPanel.BackgroundProperty, Brushes.Black),
+                SetterX(Control.TemplateProperty, controlTemplate),
             ]
         );
 
@@ -128,8 +128,8 @@ public static class LedClockStyle
                 SetterX(Rectangle.HeightProperty, (double)height),
                 SetterX(Rectangle.SnapsToDevicePixelsProperty, true),
                 SetterX(Rectangle.FillProperty, BindingX(b => {
-                    b.Path = new PropertyPath(nameof(ClockControl.Timestamp));
-                    b.RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent);
+                    b.Path = PropertyPathX(nameof(ClockControl.Timestamp));
+                    b.RelativeSource = RelativeSourceX(RelativeSourceMode.TemplatedParent);
                     b.Converter = new LedClockFillConverter();
                     b.ConverterParameter = new SegmentModel(unit, segment);
                 }))

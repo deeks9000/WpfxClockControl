@@ -1,4 +1,4 @@
-﻿namespace Demo_ClockControl.Models;
+﻿namespace Demo_04_ClockControls.Models;
 
 public readonly record struct SegmentModel(
     ClockUnit Unit, 

@@ -1,4 +1,7 @@
 <Solution>
   <Project Path="ClockControlLib/ClockControlLib.csproj" />
-  <Project Path="Demo_ClockControl/Demo_ClockControl.csproj" DefaultStartup="true" />
+  <Project Path="Demo_01_LocalSettings/Demo_01_LocalSettings.csproj" />
+  <Project Path="Demo_02_LocalStyle/Demo_02_LocalStyle.csproj" />
+  <Project Path="Demo_03_GlobalStyle/Demo_03_GlobalStyle.csproj" />
+  <Project Path="Demo_04_ClockControls/Demo_04_ClockControls.csproj" DefaultStartup="true" />
 </Solution>
