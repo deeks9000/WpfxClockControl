@@ -9,7 +9,7 @@ public class WeekdayConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         DateTime date = (DateTime)value;
-        return date.DayOfWeek.ToString();       
+        return date.DayOfWeek.ToString();
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
